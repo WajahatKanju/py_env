@@ -1,0 +1,69 @@
+
+/* This is a partial blocks.css, you need to add more rules
+   to this file to complete the assignment.  Do not add any CSS
+   styling to the original index.htm / start.htm */
+
+:root{
+   --offset-length: 2.5rem;
+}
+
+body {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+       font-size: 1.75rem;
+
+       min-width: 100vw;
+       min-height: 100vh;
+
+}
+
+/* Here is one of many  CSS rules you will need... */
+
+div{
+   padding: 1rem;
+   display: block;
+   
+
+   max-width: 15vw;
+   position: absolute;
+}
+
+#one {
+   border: 10px solid orange;
+    top: var(--offset-length);
+    left: var(--offset-length);
+}
+
+#two {
+   border: 10px solid green;
+    top: var(--offset-length);
+    right: var(--offset-length);   
+}
+
+#three {
+   border: 10px solid yellow;
+     bottom: var(--offset-length);
+    left: var(--offset-length);
+}
+
+#four {
+   border: 10px solid blue;
+    bottom: var(--offset-length);
+    right: var(--offset-length);   
+}
+
+#link{
+   position: absolute;
+   top: 0.5rem;
+   left: 50%;
+   background: green;
+   cursor: pointer;
+}
+
+
+#link a {
+   color: white;
+   text-decoration: none;
+   padding: 0.5rem;
+   display: inline-block;
+
+}

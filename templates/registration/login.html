@@ -1,0 +1,13 @@
+{% extends '_base.html' %}
+{% block content %}
+    {% if form.errors %}
+        <p>Log in Failed.Please try again. Errors Were encounterd during login</p>
+    {% endif %}
+    <form method='post'>
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input class='btn btn-primary' type='submit' value="login">
+        <input type='hidden' name='next' value='{{ next }}' />
+    </form>
+
+{% endblock  %}
