@@ -39,7 +39,8 @@ urlpatterns = [
     path('', index, name='home'),
     path('css/', css, name='css'),
     re_path(r'^pages/(?P<path>.*)$', serve, {'document_root': SITE_ROOT, 'show_indexes': True}, name='site_path'),
-    path('polls/', include('polls.urls')),
-    path('hello/', include('hello.urls')),
-    path('autos/', include('autos.urls'))
+    path('polls/', include('polls.urls'), name='polls'),
+    path('hello/', include('hello.urls'), name='hello'),
+    path('autos/', include('autos.urls'), name='autos'),
+    path('cats/', include('cats.urls'), name='cats')
 ]
