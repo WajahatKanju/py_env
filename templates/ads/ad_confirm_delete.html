@@ -1,0 +1,12 @@
+{% extends '_base.html' %}
+
+{% block content %}
+<h2>Ad delete </h2>
+Are you sure want to delete {{ ad.title }} ?
+
+<form action="" method="post">
+  {% csrf_token %}
+  <input class="btn btn-danger" type="submit" value="Delete">
+</form>
+
+{% endblock content %}

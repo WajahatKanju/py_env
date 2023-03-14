@@ -1,0 +1,35 @@
+{% extends '_base.html' %} {% block content %}
+<h2>Ads List Page</h2>
+
+<table class="table table-striped my -3">
+  <thead class="table-dark">
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Title</th>
+      <th scope="col">Price</th>
+      <th colspan="3" scope="col">text</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for ad in object_list %}
+    <tr>
+      <td>{{forloop.counter}}</td>
+      <td>{{ ad.title }}</td>
+      <td>{{ ad.price }}</td>
+      <td>{{ ad.text }}</td>
+      {% if ad.owner == request.user %}
+      <td>
+        <a class="btn btn-success" href="{% url 'ad:ad_update' ad.id %}"
+          >Update</a
+        >
+        <a class="btn btn-danger" href="{% url 'ad:ad_delete' ad.id %}"
+          >Delete</a
+        >
+      </td>
+      {% endif %}
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+<a class="btn btn-primary" href="{% url 'ad:ad_create'%}">Create Ad</a>
+{% endblock %}
