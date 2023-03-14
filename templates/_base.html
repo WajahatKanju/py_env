@@ -44,10 +44,20 @@
             <li class="nav-item p-2">
               <a class="nav-link" href="/cats">Cats</a>
           </li>
-          {% if user.is_staff %}
+          {% if user.is_authenticated %}
           <li class="nav-item p-2 bg-warning rounded">
             <a class="nav-link" href="/admin">Admin</a>
         </li>
+        <li class="nav-item p-2">
+          <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+      </li>
+      {% else %}
+      <li class="nav-item p-2">
+        <a class="nav-link" href="{% url 'login' %}">Log In</a>
+    </li>
+    <li class="nav-item p-2">
+      <a class="nav-link" href="{% url '' %}">sign in</a>
+  </li>
           {% endif %}
           </ul>
         </nav>
