@@ -14,22 +14,26 @@
     {% for ad in object_list %}
     <tr>
       <td>{{forloop.counter}}</td>
-      <td>{{ ad.title }}</td>
+      <td>
+        <a href="{% url 'ads:ad_detail' ad.id %}">{{ ad.title }}</a>
+      </td>
       <td>{{ ad.price }}</td>
       <td>{{ ad.text }}</td>
       {% if ad.owner == request.user %}
       <td>
-        <a class="btn btn-success" href="{% url 'ad:ad_update' ad.id %}"
+        <a class="btn btn-success" href="{% url 'ads:ad_update' ad.id %}"
           >Update</a
         >
-        <a class="btn btn-danger" href="{% url 'ad:ad_delete' ad.id %}"
+        <a class="btn btn-danger" href="{% url 'ads:ad_delete' ad.id %}"
           >Delete</a
         >
       </td>
+      {% else %}
+      <td></td>
       {% endif %}
     </tr>
     {% endfor %}
   </tbody>
 </table>
-<a class="btn btn-primary" href="{% url 'ad:ad_create'%}">Create Ad</a>
+<a class="btn btn-primary" href="{% url 'ads:ad_create'%}">Create Ad</a>
 {% endblock %}

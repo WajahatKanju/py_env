@@ -1,0 +1,26 @@
+{% extends '_base.html' %}
+{% block content %}
+{% load crispy_forms_tags %}
+<h2>Create a New Ad</h2>
+  
+  <form action="" method="post"  id="upload_form" enctype="multipart/form-data">
+    {{form | crispy}}
+    {% csrf_token %}
+    <input class="btn btn-success m-2" type="submit" value="Submit">
+  </form>
+
+  </div>
+
+  <script>
+    $("#upload_form").submit(function() {
+      console.log('Checking file size');
+      if (window.File && window.FileReader && window.FileList && window.Blob) {
+          var file = $('#id_{{ form.upload_field_name }}')[0].files[0];
+          if (file && file.size > {{ form.max_upload_limit }} ) {
+              alert("File " + file.name + " of type " + file.type + " must be < {{ form.max_upload_limit_text }}");
+          return false;
+        }
+      }
+    });
+    </script>
+{% endblock content %}
