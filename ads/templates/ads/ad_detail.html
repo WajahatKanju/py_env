@@ -19,8 +19,14 @@
             <h3 class="card-title">{{ Ad.title }}</h3>
             <p class="card-text"></p>
             <p>{{ Ad.text }}</p>
-            <p>Only At ${{ Ad.price }}</p>
-            <a href="#" class="btn btn-primary">But Now</a>
+            <p>Price: {{ Ad.price }}</p>
+            {% if Ad.tags.all %}
+              <h5>Tags</h5>
+              {% for tag in Ad.tags.all %}
+                <p>{{tag}}</p>
+              {% endfor %}
+            {% endif %}
+            <a href="#" class="btn btn-primary">Buy Now</a>
           </div>
         </div>
         <div class="col-3">

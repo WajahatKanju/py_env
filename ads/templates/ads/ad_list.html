@@ -1,6 +1,17 @@
 {% extends '_base.html' %} {% block content %}
 <h2>Ads List Page</h2>
 
+
+<form class="card card-sm mb-3" method="GET">
+  <div class="card-body row  align-items-center">
+      <div class="col">
+          <input name="search" class="form-control form-control-lg form-control-borderless" type="search" placeholder="Search for ADS">
+      </div>
+      <div class="col-auto">
+          <button class="btn btn-lg btn-success" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+      </div>
+  </div>
+</form>
 <table class="table table-striped my -3">
   <thead class="table-dark">
     <tr>
@@ -17,7 +28,7 @@
       <td>
         <a href="{% url 'ads:ad_detail' ad.id %}">{{ ad.title }}</a>
       </td>
-      <td>{{ ad.price }}</td>
+      <td>{{ ad.price }} Rs</td>
       <td>{{ ad.text }}</td>
       {% if ad.owner == request.user %}
       <td>

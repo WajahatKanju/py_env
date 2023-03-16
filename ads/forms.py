@@ -12,7 +12,7 @@ class CreateForm(forms.ModelForm):
 
   class Meta:
     model = Ad
-    fields = ['title', 'price', 'text', 'picture']
+    fields = ['title', 'price', 'text', 'picture', 'tags']
 
   def clean(self):
     cleaned_data = super().clean()
@@ -31,6 +31,8 @@ class CreateForm(forms.ModelForm):
       instance.picture = bytearray
     if commit:
       instance.save()
+      self.save_m2m()
+
     return instance
 
 class CommentForm(forms.Form):
