@@ -1,7 +1,8 @@
 {% extends "_base.html" %}
+{% load app_tags %}
 {% block content %}
     <h1>Welcome to {{ settings.APP_NAME }}</h1>
-    <p>
-    Hello world.
-    </p>
+    {% if user.is_authenticated %}
+        <img src="{{ user | gravatar:150 }}" alt="">
+    {% endif %}
 {% endblock content %}

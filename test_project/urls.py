@@ -44,7 +44,7 @@ urlpatterns += [
 # Serve the favicon - Keep for later
 urlpatterns += [
     path('favicon.ico', serve, {
-            'path': 'favicon.ico',
+            'path': 'favicon.png',
             'document_root': os.path.join(BASE_DIR, 'home/static'),
         }
     ),
