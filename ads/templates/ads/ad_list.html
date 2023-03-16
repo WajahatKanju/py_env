@@ -11,8 +11,8 @@
     </tr>
   </thead>
   <tbody>
-    {% for ad in object_list %}
-    <tr>
+    {% for ad in ads %}
+    <tr class="">
       <td>{{forloop.counter}}</td>
       <td>
         <a href="{% url 'ads:ad_detail' ad.id %}">{{ ad.title }}</a>
@@ -30,10 +30,53 @@
       </td>
       {% else %}
       <td></td>
+      
       {% endif %}
+      <td>
+        {% if user.is_authenticated %}
+      
+        <a href="#" onclick=
+            "favAd('{% url 'ads:ad_unfavorite' ad.id %}', {{ ad.id }} );return false;"
+            {% if ad.id not in favorites %} style="display: none;" {% endif %}
+            id="favorite_star_{{ad.id}}">
+        <span class="fa-stack" style="vertical-align: middle;">
+        <i class="fa fa-star fa-stack-1x" style="color: orange;"></i>
+        <i class="fa fa-star-o fa-stack-1x"></i>
+        </span>
+        </a>
+        <!-- the second href -->
+        <a href="#" onclick=
+             "favAd('{% url 'ads:ad_favorite' ad.id %}', {{ ad.id }} );return false;"
+            {% if ad.id in favorites %} style="display: none;" {% endif %}
+            id="unfavorite_star_{{ad.id}}">
+        <span class="fa-stack" style="vertical-align: middle;">
+        <i class="fa fa-star fa-stack-1x" style="display: none; color: orange;"></i>
+        <i class="fa fa-star-o fa-stack-1x"></i>
+        </span>
+        </a>
+      
+      {% endif %}
+      </td>
     </tr>
     {% endfor %}
   </tbody>
 </table>
 <a class="btn btn-primary" href="{% url 'ads:ad_create'%}">Create Ad</a>
+{% endblock %}
+
+{% block javascript %}
+<script defer>
+function  favAd(url, thing_id) {
+    console.log('Requesting JSON');
+    $.post(url, {},  function(rowz){
+        console.log(url, 'finished');
+        $("#unfavorite_star_"+thing_id).toggle();
+        $("#favorite_star_"+thing_id).toggle();
+    }).fail(function(xhr) {
+        alert('Url failed with '+xhr.status+' '+url);
+    });
+}
+
+
+</script>
 {% endblock %}

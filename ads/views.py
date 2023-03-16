@@ -3,14 +3,51 @@ from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, render, redirect
 from django.views.generic import  View
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.decorators.csrf import csrf_exempt
+from django.utils.decorators import method_decorator
+from django.db.utils import IntegrityError
 
-from .owner import OwnerListView, OwnerUpdateView, OwnerDeleteView, OwnerDetailView
-from .models import Ad, Comment
+
+from .owner import OwnerListView,OwnerCreateView, OwnerUpdateView, OwnerDeleteView, OwnerDetailView
+from .models import Ad, Comment, Fav
 
 from .forms import CreateForm, CommentForm
 
-class AdListView(OwnerListView):
+class FavListView(OwnerListView):
+    model = Fav
+    template_name = "favs/list.html"
+
+    def get(self, request) :
+        thing_list = Thing.objects.all()
+        favorites = list()
+        if request.user.is_authenticated:
+            # rows = [{'id': 2}, {'id': 4} ... ]  (A list of rows)
+            rows = Fav.objects.filter(user__id=request.user.id).values('id')
+            # rows = request.user.favorite_things.values('id')
+            # favorites = [2, 4, ...] using list comprehension
+            favorites = [ row['id'] for row in rows ]
+        ctx = {'thing_list' : thing_list, 'favorites': favorites}
+        return render(request, self.template_name, ctx)
+
+
+class AdListView(LoginRequiredMixin, View):
+  template_name = 'ads/ad_list.html'
   model = Ad
+
+  def get(self, request):
+    ads = Ad.objects.all().order_by('-updated_at')
+
+    favorites = list()
+    if request.user.is_authenticated:
+            # rows = [{'id': 2}, {'id': 4} ... ]  (A list of rows)
+            # rows = Fav.objects.filter(user__id=request.user.id).values('id')
+            rows = request.user.favorite_ads.values('id')
+            print(rows)
+            # favorites = [2, 4, ...] using list comprehension
+            favorites = [ row['id'] for row in rows ]
+            
+    ctx = {'ads': ads, 'favorites': favorites}
+    return render(request, self.template_name, ctx)
 
 class AdDetailView(LoginRequiredMixin, View):
   template_name = 'ads/ad_detail.html'
@@ -93,6 +130,29 @@ class CommentDeleteView(OwnerDeleteView):
 
 
 
+@method_decorator(csrf_exempt, name='dispatch')
+class AddFavoriteView(LoginRequiredMixin, View):
+    def post(self, request, pk) :
+        print("Add PK",pk)
+        ad = get_object_or_404(Ad, id=pk)
+        fav = Fav(user=request.user, ad=ad)
+        try:
+            fav.save()  # In case of duplicate key
+        except IntegrityError as e:
+            pass
+        return HttpResponse()
+
+@method_decorator(csrf_exempt, name='dispatch')
+class DeleteFavoriteView(LoginRequiredMixin, View):
+    def post(self, request, pk) :
+        print("Delete PK",pk)
+        ad = get_object_or_404(Ad, id=pk)
+        try:
+            fav = Fav.objects.get(user=request.user, ad=ad).delete()
+        except Fav.DoesNotExist as e:
+            pass
+
+        return HttpResponse()
 
 
 def stream_file(request, pk):

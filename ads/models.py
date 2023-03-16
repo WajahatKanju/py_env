@@ -12,12 +12,15 @@ class Ad(models.Model):
     content_type = models.CharField(
         max_length=256, null=True, help_text='The MIMEType of the file')
     comments = models.ManyToManyField(settings.AUTH_USER_MODEL,
-        through='Comment', related_name='comments_owned')
+                                      through='Comment', related_name='comments_owned')
 
     owner = models.ForeignKey(settings.AUTH_USER_MODEL,
                               on_delete=models.CASCADE)
     created_at = models.DateField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    favorites = models.ManyToManyField(settings.AUTH_USER_MODEL,
+        through='Fav', related_name='favorite_ads')
 
     def __str__(self):
         return self.title
@@ -41,3 +44,13 @@ class Comment(models.Model):
         if len(self.text) < 15:
             return self.text
         return self.text[:11] + ' ...'
+
+class Fav(models.Model):
+    ad = models.ForeignKey(Ad, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+
+    class Meta:
+        unique_together  =   ('ad', 'user')
+
+    def __str__(self):
+        return f'{self.users.username} Likes {self.ads.title}'
